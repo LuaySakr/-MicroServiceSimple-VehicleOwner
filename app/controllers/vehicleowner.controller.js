@@ -11,7 +11,7 @@ var VehicleOwnerCtrl = function(VehicleOwner){
 				res.json({status: false, error: err.message});
 				return;
 			}
-			res.json({status: true, vehicleowner: vehicleowner});
+			res.json({status: true, number: req.body});
 		});
 	}
 
@@ -26,9 +26,12 @@ var VehicleOwnerCtrl = function(VehicleOwner){
 	}
 
 	VehicleOwnerObj.UpdateVehicleOwner = function(req, res, next){
-		var completed = req.body.completed;
-		VehicleOwner.findById(req.params.vehicleowner_id, function(err, vehicleowner){
-			vehicleowner.completed = completed;
+		console.log(req.body)
+		// var completed = req.body.completed;
+		VehicleOwner.findById(req.body._id, function(err, vehicleowner){
+			// vehicleowner.completed = vehicleowner.completed;
+			console.log(req.body.status)
+			vehicleowner.status=req.body.status;
 			vehicleowner.save(function(err, vehicleowner){
 				if(err) {
 					res.json({status: false, error: "Status not updated"});
@@ -39,7 +42,7 @@ var VehicleOwnerCtrl = function(VehicleOwner){
 	}
 
 	VehicleOwnerObj.DeleteVehicleOwner = function(req, res, next){
-		VehicleOwner.remove({_id : req.params.vehicleowner_id }, function(err, vehicleowner){
+		VehicleOwner.remove({number : req.params.number }, function(err, vehicleowner){
 			if(err) {
 				res.json({status: false, error: "Deleting vehicleowner is not successfull"});
 			}
